@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <div class="bs-example">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <a href="#" class="navbar-brand">Brand</a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav">
+                    <a href="#" class="nav-item nav-link active">Home</a>
+                    <a href="#" class="nav-item nav-link">Profile</a>
+                    <a href="#" class="nav-item nav-link">Messages</a>
+                </div>
+                <div class="navbar-nav ml-auto">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#loginModal">Login</button>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="modal fade" role="dialog" id="loginModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Авторизация</h3>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid h-100">
+                        <div class="row justify-content-center align-items-center h-100">
+                            <form role="form" class="justify-content-center" name="loginForm">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="uname" required placeholder="Введите логин">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" name="upassword" required placeholder="Введите пароль">
+                                </div>
+                                <input type="submit" class="btn btn-success btn-block" value="Войти">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    <div class="container-fluid h-100">-->
+<!--      <div class="row justify-content-center align-items-center h-100">-->
+<!--        <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">-->
+<!--          <form role="form" class="justify-content-center" name="myForm">-->
+<!--&lt;!&ndash;          <form role="form" class="justify-content-center" method="post" action="/api/users/regUser">&ndash;&gt;-->
+<!--            <div class="form-group">-->
+<!--              <input type="text" class="form-control" name="uname" placeholder="Введите имя">-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <input type="email" class="form-control" name="uemail" placeholder="Введите email">-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <input type="password" class="form-control" name="upassword" placeholder="Введите пароль">-->
+<!--            </div>-->
+<!--            <input type="submit" class="btn btn-success btn-block" title="Отправить">-->
+<!--          </form>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+    <script src="js/jquery-3.4.1.slim.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery-1.9.1.js"></script>
+
+<!--    <script type="text/javascript">-->
+<!--      let form = document.forms["myForm"];-->
+<!--      form.onsubmit = function (e) {-->
+<!--        e.preventDefault();-->
+
+<!--        let fd = new FormData(form);-->
+<!--        let data = {};-->
+
+<!--        for (let [key, prop] of fd) {-->
+<!--          data[key] = prop;-->
+<!--        }-->
+
+<!--        data = JSON.stringify(data, null, 2);-->
+<!--        console.log(data);-->
+
+<!--        var params = {-->
+<!--            "url": "api/users/regUser",-->
+<!--            "method": "POST",-->
+<!--            "timeout": 0,-->
+<!--            "headers": {-->
+<!--                "Content-Type": "application/json"-->
+<!--            },-->
+<!--            "data": data,-->
+<!--        };-->
+
+<!--        $.ajax(params).done(function(response) {-->
+<!--            console.log(response);-->
+<!--          });-->
+<!--      }-->
+<!--    </script>-->
+    <script type="text/javascript">
+        let form = document.forms["loginForm"];
+        form.onsubmit = function (e) {
+            e.preventDefault();
+
+            let fd = new FormData(form);
+            let data = {};
+
+            for (let [key, prop] of fd) {
+                data[key] = prop;
+            }
+
+            data = JSON.stringify(data, null, 2);
+            console.log(data);
+
+            var params = {
+                "url": "api/users/authUser",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "data": data,
+            };
+
+            $.ajax(params).done(function(response) {
+                console.log(response);
+            });
+        }
+    </script>
+  </body>
+</html>

@@ -3,7 +3,7 @@ package com.diploma;
 import com.diploma.DAO.UsersEntityImpl;
 import com.diploma.Entities.UsersEntity;
 
-//import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-//@ApplicationScoped
+@ApplicationScoped
 @Path("/users")
 public class Index {
 //    private static final UsersEntityImpl userDao = new UsersEntityImpl();

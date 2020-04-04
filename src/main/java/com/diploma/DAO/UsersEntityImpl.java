@@ -11,8 +11,7 @@ public class UsersEntityImpl implements UserDao {
 
     private static UsersEntityImpl INSTANCE;
 
-    private UsersEntityImpl() {
-    }
+    private UsersEntityImpl() {}
 
     public static UsersEntityImpl getInstance() {
         if (INSTANCE == null)
@@ -21,7 +20,6 @@ public class UsersEntityImpl implements UserDao {
         return INSTANCE;
     }
 
-//    private static final Logger logger = LoggerFactory.getLogger(UsersEntityImpl.class);
     private Session session = HibernateUtil.getSession();
 
     public void addUser(UsersEntity user) {
@@ -41,37 +39,27 @@ public class UsersEntityImpl implements UserDao {
     }
 
     public void removeUser(int uid) {
-        Transaction tr = session.beginTransaction();
-        UsersEntity user = (UsersEntity) session.load(UsersEntity.class, new Integer(uid));
+//        Transaction tr = session.beginTransaction();
+        UsersEntity user = session.load(UsersEntity.class, new Integer(uid));
 
-        if (user != null) {
+        if (user != null)
             session.delete(user);
-//            logger.info("User successfully deleted. User details: " + user);
-        }
 
-        tr.commit();
-//        session.close();
+//        tr.commit();
     }
 
     public UsersEntity getUserByUid(int uid) {
-        UsersEntity user = (UsersEntity) session.load(UsersEntity.class, new Integer(uid));
-
+        UsersEntity user = session.load(UsersEntity.class, new Integer(uid));
         return user;
     }
 
     public UsersEntity getUserByLogin(String login) {
-        UsersEntity user = (UsersEntity) session.load(UsersEntity.class, new String(login));
-
+        UsersEntity user = session.load(UsersEntity.class, login);
         return user;
     }
 
     public List<UsersEntity> listUsers() {
         List<UsersEntity> usersList = session.createQuery("from UsersEntity").list();
-
-//        for(UsersEntity user : usersList) {
-//            logger.info("User in list: " + user);
-//        }
-
         return usersList;
     }
 }

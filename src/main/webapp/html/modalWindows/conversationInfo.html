@@ -1,0 +1,74 @@
+<div id="conversationInfoModalWindow">
+    <script type="text/javascript">
+
+        var me = $('#conversationInfoModal');
+        var id;
+
+        me.on('shown.bs.modal', function () {
+            id = me.find("#convoId").val();
+            fillModalConvo(id);
+        });
+
+        me.on('hide.bs.modal', function () {
+            resetForm('conversationInfo');
+        });
+
+    </script>
+    <div class="modal fade" role="dialog" id="conversationInfoModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Информация по запросу</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="container-fluid h-100 row">
+                        <div class="row justify-content-start align-items-center h-100 col-sm">
+                            <form name="conversationInfo">
+                                <div class="form-header"><h4>Запрос</h4></div>
+                                <div class="form-group">
+                                    <label>Convo ID</label>
+                                    <input type="text" id="convoId" class="form-control" disabled value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Запрос сформирован</label>
+                                    <input type="text" id="reqDate" class="form-control" disabled value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Текст запроса</label>
+                                    <input type="text" id="req" class="form-control" disabled value="">
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="row justify-content-start align-items-center h-100 col-sm">
+                            <form  name="conversationInfo">
+                                <div class="form-header"><h4>Ответ</h4></div>
+                                <div class="form-group">
+                                    <label>Ответ пришел</label>
+                                    <input type="text" id="respDate" class="form-control" disabled value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Текст ответа</label>
+                                    <input type="text" id="resp" class="form-control" disabled value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Статус запроса</label>
+                                    <input type="text" id="status" class="form-control" disabled value="">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <label>Запрос выолнил </label>
+                        <label id="performedBy"></label>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

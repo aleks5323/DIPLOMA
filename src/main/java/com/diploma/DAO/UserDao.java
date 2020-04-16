@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface UserDao {
 
-    public void addUser(UsersEntity user);
-    public void updateUser(UsersEntity user);
-    public void removeUser(int uid);
-    public UsersEntity getUserByUid(int uid);
-    public UsersEntity getUserByLogin(String login);
-    public List<UsersEntity> listUsers();
+    void addUser(UsersEntity user);
+    void updateUser(UsersEntity user);
+    boolean removeUser(int uid);
+    UsersEntity getUserByUid(int uid);
+    UsersEntity getUserByLogin(String login);
+    List<UsersEntity> listUsers();
 
 }

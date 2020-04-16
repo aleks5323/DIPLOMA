@@ -1,0 +1,70 @@
+<div id="loginModalWindow">
+    <script type="text/javascript">
+        let loginForm = document.forms["loginForm"];
+        loginForm.onsubmit = function (e) {
+            e.preventDefault();
+
+            let fd = new FormData(loginForm);
+            let data = {};
+
+            console.log(fd);
+            console.log(data);
+
+            for (let [key, prop] of fd) {
+                data[key] = prop;
+            }
+
+            data = JSON.stringify(data, null, 2);
+
+            performRequest("api/users/authUser", "POST", {"Content-Type": "application/json"}, data, closeLoginModal, null);
+
+            // $.ajax(
+            //     {
+            //         "url": "api/users/authUser",
+            //         "method": "POST",
+            //         "timeout": 0,
+            //         "headers": {
+            //             "Content-Type": "application/json"
+            //         },
+            //         "data": data,
+            //         complete: function(jqXHR) {
+            //             if (jqXHR.status == 202)
+            //             {
+            //                 $('#loginModal').modal('hide');
+            //                 $("#loginSection").load("html/userHello.html");
+            //                 var usernameLine = $("#userString").text();
+            //                 $("#userString").text("usernameLine");
+            //             }
+            //             console.log(jqXHR.status);
+            //         }
+            //     }
+            // );
+        }
+    </script>
+    <div class="modal fade" role="dialog" id="loginModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Авторизация</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="container-fluid h-100">
+                        <div class="row justify-content-center align-items-center h-100">
+                            <form role="form" class="justify-content-center" name="loginForm">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="uname" required placeholder="Введите логин">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" name="upassword" required placeholder="Введите пароль">
+                                </div>
+                                <input type="submit" class="btn btn-success btn-block" value="Войти">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

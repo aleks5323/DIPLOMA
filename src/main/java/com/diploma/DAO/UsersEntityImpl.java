@@ -1,26 +1,13 @@
 package com.diploma.DAO;
 
 import com.diploma.Entities.UsersEntity;
-import com.diploma.Utils.*;
-import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 
-public class UsersEntityImpl implements UserDao {
-
-    private static UsersEntityImpl INSTANCE;
-
-    private UsersEntityImpl() {}
-
-    public static UsersEntityImpl getInstance() {
-        if (INSTANCE == null)
-            INSTANCE = new UsersEntityImpl();
-
-        return INSTANCE;
-    }
-
-    private Session session = HibernateUtil.getSession();
+@ApplicationScoped
+public class UsersEntityImpl extends EntityBase implements UserDao {
 
     public void addUser(UsersEntity user) {
         Transaction tr = session.beginTransaction();
@@ -38,14 +25,17 @@ public class UsersEntityImpl implements UserDao {
 //        session.close();
     }
 
-    public void removeUser(int uid) {
-//        Transaction tr = session.beginTransaction();
+    public boolean removeUser(int uid) {
+        Transaction tr = session.beginTransaction();
         UsersEntity user = session.load(UsersEntity.class, new Integer(uid));
 
-        if (user != null)
+        if (user != null) {
             session.delete(user);
+            tr.commit();
+            return true;
+        }
 
-//        tr.commit();
+        return false;
     }
 
     public UsersEntity getUserByUid(int uid) {

@@ -1,47 +1,55 @@
 package com.diploma.DAO;
 
 import com.diploma.Entities.ConversationsEntity;
-import com.diploma.Utils.HibernateUtil;
-import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 
-public class ConversationsEntityImpl implements ConversationsDAO {
-
-    private static ConversationsEntityImpl INSTANCE;
-
-    private ConversationsEntityImpl() {}
-
-    public static ConversationsEntityImpl getInstance() {
-        if (INSTANCE == null)
-            INSTANCE = new ConversationsEntityImpl();
-
-        return INSTANCE;
-    }
-
-    private Session session = HibernateUtil.getSession();
+@ApplicationScoped
+public class ConversationsEntityImpl extends EntityBase implements ConversationsDAO {
 
     @Override
-    public void newConversation(ConversationsEntity convo) {
+    public boolean newConversation(ConversationsEntity convo) {
         Transaction tr = session.beginTransaction();
-        session.save(convo);
-        tr.commit();
+
+        try {
+            session.save(convo);
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            tr.rollback();
+            return false;
+        }
     }
 
     @Override
-    public void updateConversation(ConversationsEntity convo) {
+    public boolean updateConversation(ConversationsEntity convo) {
         Transaction tr = session.beginTransaction();
-        session.update(convo);
-        tr.commit();
+
+        try {
+            session.update(convo);
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            tr.rollback();
+            return false;
+        }
     }
 
     @Override
-    public void removeConversation(int cid) {
+    public boolean removeConversation(int cid) {
         ConversationsEntity convo = session.load(ConversationsEntity.class, new Integer(cid));
+        Transaction tr = session.beginTransaction();
 
-        if (convo != null)
+        try {
             session.delete(convo);
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            tr.rollback();
+            return false;
+        }
     }
 
     @Override
@@ -60,5 +68,10 @@ public class ConversationsEntityImpl implements ConversationsDAO {
     public List<ConversationsEntity> listConvos() {
         List<ConversationsEntity> convosList = session.createQuery("from ConversationsEntity").list();
         return convosList;
+    }
+
+    @Override
+    public int getConvoCount() {
+        return listConvos().size();
     }
 }

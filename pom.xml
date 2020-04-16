@@ -106,7 +106,8 @@
     </dependencies>
 
     <build>
-        <finalName>diplom</finalName>
+<!--        <finalName>diplom</finalName>-->
+        <finalName>ROOT</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>

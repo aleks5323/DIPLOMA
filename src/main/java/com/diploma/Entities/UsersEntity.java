@@ -1,8 +1,7 @@
 package com.diploma.Entities;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users", schema = "public", catalog = "diploma")

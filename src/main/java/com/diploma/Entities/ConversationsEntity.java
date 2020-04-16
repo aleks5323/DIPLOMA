@@ -2,6 +2,8 @@ package com.diploma.Entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -9,10 +11,11 @@ import java.util.Objects;
 public class ConversationsEntity {
     private int cid;
     private String request;
-    private Timestamp reqDate;
-    private String response;
+    private Timestamp reqDate = new Timestamp(new Date().getTime());
+    private String response = "";
     private Timestamp resDate;
     private int performedBy;
+    private String cstatus;
 
     @Id
     @Column(name = "cid")
@@ -91,5 +94,15 @@ public class ConversationsEntity {
     @Override
     public int hashCode() {
         return Objects.hash(cid, request, reqDate, response, resDate);
+    }
+
+    @Basic
+    @Column(name = "cstatus")
+    public String getCstatus() {
+        return cstatus;
+    }
+
+    public void setCstatus(String cstatus) {
+        this.cstatus = cstatus;
     }
 }

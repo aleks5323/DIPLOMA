@@ -1,27 +1,32 @@
-package com.diploma;
+package com.diploma.REST;
 
 import com.diploma.DAO.ConversationsEntityImpl;
 import com.diploma.Entities.ConversationsEntity;
 
 import javax.annotation.security.PermitAll;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @ApplicationScoped
 @Path("/conversations")
 public class Conversations {
 
-    private ConversationsEntityImpl convoDao = ConversationsEntityImpl.getInstance();
+    @Inject
+    private ConversationsEntityImpl convoDao;
 
     @POST
     @Path("/newConversation")
     @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
-    public void newConversation(ConversationsEntity convo) {
-        convoDao.newConversation(convo);
+    public Response newConversation(ConversationsEntity convo) {
+        if (convoDao.newConversation(convo))
+            return Response.status(Response.Status.OK).build();
+        else
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
     }
 
     @POST
@@ -35,33 +40,32 @@ public class Conversations {
     @GET
     @Path("/delConversation/{cid}")
     @PermitAll
-    public void delConversation(@PathParam("cid") Integer cid) {
-        convoDao.removeConversation(cid);
+    public Response delConversation(@PathParam("cid") Integer cid) {
+        if (convoDao.removeConversation(cid))
+            return Response.status(Response.Status.OK).build();
+        else
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
     }
 
     @GET
-    @Path("/getConversation/{cid}")
     @PermitAll
-    public String getConvoById(@PathParam("cid") Integer cid) {
+    @Path("/getConversation/{cid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ConversationsEntity getConvoById(@PathParam("cid") Integer cid) {
         ConversationsEntity convo = convoDao.getConvoById(cid);
-        return convo.getCid() + "; " + convo.getRequest() + "; " + convo.getReqDate() + "; " + convo.getPerformedBy();
+//        return convo.getCid() + "; " + convo.getRequest() + "; " + convo.getReqDate() + "; " + convo.getPerformedBy();
+        return convo;
     }
 
     @GET
     @PermitAll
     @Path("/list")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String listConvos() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ConversationsEntity> listConvos() {
         List<ConversationsEntity> list;
         list = convoDao.listConvos();
 
-        String out="";
-
-        for (ConversationsEntity convo : list) {
-            out += (convo.getCid() + "\t\t" + convo.getRequest() + "\t\t" + convo.getReqDate() + "\t\t" + convo.getPerformedBy() + "\n");
-        }
-
-        return out;
+        return list;
     }
 
 //    @GET

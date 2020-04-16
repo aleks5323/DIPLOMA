@@ -6,11 +6,12 @@ import java.util.List;
 
 public interface ConversationsDAO {
 
-    public void newConversation(ConversationsEntity convo);
-    public void updateConversation(ConversationsEntity convo);
-    public void removeConversation(int cid);
-    public ConversationsEntity getConvoById(int cid);
-    public ConversationsEntity getConvoByUser(String login);
-    public List<ConversationsEntity> listConvos();
+    boolean newConversation(ConversationsEntity convo);
+    boolean updateConversation(ConversationsEntity convo);
+    boolean removeConversation(int cid);
+    ConversationsEntity getConvoById(int cid);
+    ConversationsEntity getConvoByUser(String login);
+    List<ConversationsEntity> listConvos();
+    int getConvoCount();
 
 }

@@ -1,0 +1,105 @@
+<div id="conversations">
+
+    <link rel="stylesheet" href="css/sweetAlert/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="css/basicContext/basicContext.min.css">
+    <link rel="stylesheet" href="css/basicContext/themes/default.min.css">
+
+    <script src="js/sweetAlert/sweetalert2.min.js"></script>
+    <script src="js/basicContext/basicContext.min.js"></script>
+
+    <script type="text/javascript">
+        $('#convos').on('load', performTable());
+
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        $('#convos').find('tbody').on('click', function(e){
+            if (!getSelection().toString()) {
+                var id = $(e.target).closest('tr').attr("myId");
+                var window = $('#conversationInfoModal');
+
+                window.find("#convoId").val(id);
+
+                window.modal('show');
+                console.log(id)
+            }
+        });
+
+        function clicked() {
+            console.log("entry clicked");
+        }
+
+        function actionDelete(id) {
+            playNotificationSound("notify");
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    deleteConversation(id);
+                }
+            });
+        }
+
+        $('#convos').find('tbody').on('contextmenu', function(e) {
+
+            var items = [
+                { title: 'Save as XML', icon: 'ion-code-download', fn: function() {} },
+                { },
+                { title: 'Delete', icon: 'ion-trash-a', fn: function(){actionDelete($(e.target).closest('tr').attr("myId"));} }
+            ];
+
+            basicContext.show(items, e.originalEvent);
+        });
+    </script>
+
+    <script>
+        function on() {
+            document.getElementById("spinner").style.display = "block";
+        }
+
+        function off() {
+            document.getElementById("spinner").style.display = "none";
+        }
+    </script>
+    <div id="spinner" class="overlay">
+    <div class="overlay__inner">
+        <div class="overlay__content">
+<!--            <span class="spinner"></span>-->
+                                    <div class="loader">
+                                        <div class="inner one"></div>
+                                        <div class="inner two"></div>
+                                        <div class="inner three"></div>
+                                    </div>
+        </div>
+    </div>
+</div>
+
+    <div class="tableContainer">
+
+        <div class="table-responsive table-hover">
+
+
+
+            <table id="convos" class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Запрос создан</th>
+                    <th scope="col">Ответ получен</th>
+                    <th scope="col">Выполнил</th>
+                    <th scope="col">Статус</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

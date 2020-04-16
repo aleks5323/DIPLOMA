@@ -1,10 +1,11 @@
-package com.diploma;
+package com.diploma.REST;
 
 import com.diploma.DAO.UsersEntityImpl;
 import com.diploma.Entities.UsersEntity;
 
 import javax.annotation.security.PermitAll;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.xml.bind.DatatypeConverter;
@@ -16,10 +17,8 @@ import java.util.List;
 @ApplicationScoped
 @Path("/users")
 public class Users {
-//    private static final UsersEntityImpl userDao = new UsersEntityImpl();
-
-//    @Inject
-    private UsersEntityImpl userDao = UsersEntityImpl.getInstance();
+    @Inject
+    private UsersEntityImpl userDao;
 
     @POST
     @Path("/regUser")
@@ -53,18 +52,12 @@ public class Users {
     }
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String listUsers() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UsersEntity> listUsers() {
         List<UsersEntity> list = new ArrayList();
         list = userDao.listUsers();
 
-        String out="";
-
-        for (UsersEntity user : list) {
-            out += (user.getUname() + "\t\t" + user.getUemail() + "\t\t\n");
-        }
-
-        return out;
+        return list;
     }
 
     @POST
@@ -77,9 +70,10 @@ public class Users {
         md.update(user.getUpassword().getBytes());
         String pwdFromDb = DatatypeConverter.printHexBinary(md.digest());
 
+        ///////!!!!!!!!
         if (pwdFromDb.equals(userCheck.getUpassword()))
             return Response.accepted().cookie(new NewCookie("login", user.getUname(), "/", "localhost", "", 1, false)).cookie(new NewCookie("pass", userCheck.getUpassword(), "/", "localhost", "", 1, false)).build();
         else
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 }

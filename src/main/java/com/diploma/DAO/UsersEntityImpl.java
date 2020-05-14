@@ -4,6 +4,9 @@ import com.diploma.Entities.UsersEntity;
 import org.hibernate.Transaction;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @ApplicationScoped
@@ -44,12 +47,19 @@ public class UsersEntityImpl extends EntityBase implements UserDao {
     }
 
     public UsersEntity getUserByLogin(String login) {
-        UsersEntity user = session.load(UsersEntity.class, login);
+        UsersEntity user = (UsersEntity) session.createQuery("from UsersEntity where uname = :login").setParameter("login", login).uniqueResult();
         return user;
     }
 
     public List<UsersEntity> listUsers() {
         List<UsersEntity> usersList = session.createQuery("from UsersEntity").list();
         return usersList;
+    }
+
+    public boolean validateUser(UsersEntity user) {
+        boolean userIsValid;
+        UsersEntity genuineUser = getUserByLogin(user.getUname());
+        userIsValid = user.getUpassword().equals(genuineUser.getUpassword()) ? true : false;
+        return userIsValid;
     }
 }

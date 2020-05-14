@@ -2,7 +2,6 @@
 
     <link rel="stylesheet" href="css/sweetAlert/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="css/basicContext/basicContext.min.css">
     <link rel="stylesheet" href="css/basicContext/themes/default.min.css">
 
@@ -51,6 +50,7 @@
 
             var items = [
                 { title: 'Save as XML', icon: 'ion-code-download', fn: function() {} },
+                { title: 'Sign and send', icon: 'ion-paper-airplane', fn: function() {} },
                 { },
                 { title: 'Delete', icon: 'ion-trash-a', fn: function(){actionDelete($(e.target).closest('tr').attr("myId"));} }
             ];
@@ -72,11 +72,11 @@
     <div class="overlay__inner">
         <div class="overlay__content">
 <!--            <span class="spinner"></span>-->
-                                    <div class="loader">
-                                        <div class="inner one"></div>
-                                        <div class="inner two"></div>
-                                        <div class="inner three"></div>
-                                    </div>
+            <div class="loader">
+                <div class="inner one"></div>
+                <div class="inner two"></div>
+                <div class="inner three"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -84,8 +84,6 @@
     <div class="tableContainer">
 
         <div class="table-responsive table-hover">
-
-
 
             <table id="convos" class="table">
                 <thead class="thead-dark">

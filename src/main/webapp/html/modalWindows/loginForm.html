@@ -4,19 +4,43 @@
         loginForm.onsubmit = function (e) {
             e.preventDefault();
 
+            $("#modalLoginButton").prop("disabled", true);
+            $("#modalLoginButton").html(
+                `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
+            );
+
             let fd = new FormData(loginForm);
             let data = {};
-
-            console.log(fd);
-            console.log(data);
 
             for (let [key, prop] of fd) {
                 data[key] = prop;
             }
 
+            data["upassword"] = CryptoJS.MD5(data["upassword"]).toString().toUpperCase();
+
+            let user = data["uname"];
+
             data = JSON.stringify(data, null, 2);
 
-            performRequest("api/users/authUser", "POST", {"Content-Type": "application/json"}, data, closeLoginModal, null);
+            performRequest("api/users/authUser", "POST", {"Content-Type": "application/json"}, data,
+                performMultiActions,
+                [
+                    {
+                        'fn': closeLoginModal,
+                        'params': {}
+                    },
+                    // {
+                    //     'fn': applyCookie,
+                    //     'params': {"name": "login", "value": user}
+                    // },
+                    {
+                        'fn': openLocation,
+                        'params': "/"
+                    }],
+                    function(){
+                        $("#modalLoginButton").prop("disabled", false);
+                        $("#modalLoginButton").html(`Войти`);
+                    });
 
             // $.ajax(
             //     {
@@ -31,7 +55,7 @@
             //             if (jqXHR.status == 202)
             //             {
             //                 $('#loginModal').modal('hide');
-            //                 $("#loginSection").load("html/userHello.html");
+            //                 $("#userSection").load("html/userHello.html");
             //                 var usernameLine = $("#userString").text();
             //                 $("#userString").text("usernameLine");
             //             }
@@ -54,12 +78,12 @@
                         <div class="row justify-content-center align-items-center h-100">
                             <form role="form" class="justify-content-center" name="loginForm">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="uname" required placeholder="Введите логин">
+                                    <input type="text" class="form-control" name="uname" required placeholder="Введите логин" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <input type="password" class="form-control" name="upassword" required placeholder="Введите пароль">
                                 </div>
-                                <input type="submit" class="btn btn-success btn-block" value="Войти">
+                                <button type="submit" id="modalLoginButton" class="btn btn-success btn-block">Войти</button>
                             </form>
                         </div>
                     </div>

@@ -5,6 +5,20 @@
 
     <script type="text/javascript">
 
+        $('#orgItn').on('input',function(e){
+            if($('#orgItn').val().length > 0)
+                $('#physItnDiv').hide();
+            else
+                $('#physItnDiv').show();
+        });
+
+        $('#physItn').on('input',function(e){
+            if($('#physItn').val().length > 0)
+                $('#orgItnDiv').hide();
+            else
+                $('#orgItnDiv').show();
+        });
+
         function validateForm(formClass) {
             var eligible = true;
             // var forms = document.getElementsByClassName(formClass);
@@ -36,6 +50,23 @@
             return eligible;
         }
 
+        $(function(){
+            var dtToday = new Date();
+
+            var month = dtToday.getMonth() + 1;
+            var day = dtToday.getDate();
+            var year = dtToday.getFullYear();
+
+            if(month < 10)
+                month = '0' + month.toString();
+            if(day < 10)
+                day = '0' + day.toString();
+
+            var maxDate = year + '-' + month + '-' + day;
+            $('#newReqDate').attr('max', maxDate);
+            $('#newReqDate').attr('value', maxDate);
+        });
+
         let newRequestForm = document.forms["createRequest"];
         newRequestForm.onsubmit = function (e) {
             e.preventDefault();
@@ -43,15 +74,19 @@
 
                 let fd = new FormData(newRequestForm);
                 let data = {};
-                let ts = "";
+                let ts = {};
 
                 for (let [key, prop] of fd) {
                     // data[key] = prop;
-                    ts += (" " + prop);
+                    // ts += (" " + prop);
+                    if (prop != "")
+                        ts[key] = prop;
                 }
 
+                ts = JSON.stringify(ts, null, 2);
+
                 data["request"] = ts;
-                data["performedBy"] = '1';
+                data["performedBy"] = "1";
 
                 data = JSON.stringify(data, null, 2);
 
@@ -71,7 +106,7 @@
                         },
                         {
                             'fn': resetForm,
-                            'params': 'createRequestModal'
+                            'params': 'createRequest'
                         }
                     ]);
                     // closeModalWindow, {'modalId': 'createRequestModal'});
@@ -100,20 +135,20 @@
                                     </div>
                                     <div class="form-group">
                                         <label>ИНН юридического лица</label>
-                                        <input type="text" name="entityItn" id="entityItn" class="form-control" required pattern="^[0-9]+$">
+                                        <input type="text" name="entityItn" id="entityItn" class="form-control" required maxlength="10" placeholder="__________" pattern="^[0-9]+$">
                                     </div>
                                     <div class="form-group">
                                         <label>Основной государственный регистрационный номер юридического лица</label>
-                                        <input type="text" name="entityRegNumber" id="entityRegNumber" class="form-control" required pattern="^[0-9]+$">
+                                        <input type="text" name="entityRegNumber" id="entityRegNumber" class="form-control" required maxlength="13" placeholder="_____________" pattern="^[0-9]+$">
                                     </div>
                                     <div class="form-header"><h5>Сведения о налогоплательщике, в отношении которого осуществляется запрос</h5></div>
-                                    <div class="form-group">
+                                    <div class="form-group" id="orgItnDiv">
                                         <label>ИНН организации</label>
-                                        <input type="text" name="orgItn" id="orgItn" class="form-control" pattern="^[0-9]+$">
+                                        <input type="text" name="orgItn" id="orgItn" class="form-control" maxlength="10" placeholder="__________" pattern="^[0-9]+$">
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" id="physItnDiv">
                                         <label>ИНН физического лица</label>
-                                        <input type="text" name="physItn" id="physItn" class="form-control" pattern="^[0-9]+$">
+                                        <input type="text" name="physItn" id="physItn" class="form-control" maxlength="12" placeholder="____________" pattern="^[0-9]+$">
                                     </div>
                                     <div class="form-group">
                                         <label>Дата, на которую запрашиваются сведения</label>

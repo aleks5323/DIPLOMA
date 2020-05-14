@@ -1,10 +1,13 @@
 package com.diploma.DAO;
 
 import com.diploma.Entities.ConversationsEntity;
+import com.diploma.Entities.UsersEntity;
 import org.hibernate.Transaction;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.xml.registry.infomodel.User;
 import java.util.List;
+import java.util.UUID;
 
 @ApplicationScoped
 public class ConversationsEntityImpl extends EntityBase implements ConversationsDAO {
@@ -38,8 +41,8 @@ public class ConversationsEntityImpl extends EntityBase implements Conversations
     }
 
     @Override
-    public boolean removeConversation(int cid) {
-        ConversationsEntity convo = session.load(ConversationsEntity.class, new Integer(cid));
+    public boolean removeConversation(UUID cid) {
+        ConversationsEntity convo = session.load(ConversationsEntity.class, cid);
         Transaction tr = session.beginTransaction();
 
         try {
@@ -53,7 +56,7 @@ public class ConversationsEntityImpl extends EntityBase implements Conversations
     }
 
     @Override
-    public ConversationsEntity getConvoById(int cid) {
+    public ConversationsEntity getConvoById(UUID cid) {
         ConversationsEntity convo = session.load(ConversationsEntity.class, cid);
         return convo;
     }
@@ -67,6 +70,10 @@ public class ConversationsEntityImpl extends EntityBase implements Conversations
     @Override
     public List<ConversationsEntity> listConvos() {
         List<ConversationsEntity> convosList = session.createQuery("from ConversationsEntity").list();
+        for (ConversationsEntity t : convosList) {
+            UsersEntity ut = (UsersEntity)session.createQuery("from UsersEntity where uid = " + t.getPerformedBy()).getSingleResult();
+            t.setAuthorName(ut.getUname());
+        }
         return convosList;
     }
 

@@ -1,5 +1,7 @@
 $.getScript('/js/date.js');
 $.getScript('/js/toastr/toastr.min.js');
+$.getScript('/js/jquery.cookie.js');
+$.getScript('/js/crypto-js-4.0.0/crypto-js.js');
 
 function notify(params) {
     const toastrOptions = {
@@ -54,6 +56,15 @@ function includeModalWindow(path) {
     });
 }
 
+function includePage(path = null) {
+    if (path == null)
+        $("#pageContent").empty();
+    else
+        $.get(path, function(data) {
+            $("#pageContent").html(data);
+        });
+}
+
 function closeModalWindow(params, jqXHR) {
     let window = "#" + params['modalId'];
     $(window).modal('hide');
@@ -66,9 +77,10 @@ function showModalWindow(windowName) {
 
 function closeLoginModal(params, jqXHR) {
     $('#loginModal').modal('hide');
-    $("#loginSection").load("html/userHello.html");
-    var usernameLine = $("#userString").text();
-    $("#userString").text("usernameLine");
+    // $("#loginButton").hide();
+    // var usernameLine = $.cookie("login");
+    // $("#userString").text("Hello, " + usernameLine);
+    // $("#userPanel").show();
 }
 
 function commonErrors(params, jqXHR, exception = null) {
@@ -108,7 +120,7 @@ function performMultiActions(params) {
     });
 }
 
-function performRequest(path, method = "GET", headers = null, data = null, onSuccess = null, successParams = null, onFail = commonErrors, failParams = null) {
+function performRequest(path, method = "GET", headers = null, data = null, onSuccess = null, successParams = null, onFail = null, failParams = null) {
 
     $.ajax(
         {
@@ -129,6 +141,7 @@ function performRequest(path, method = "GET", headers = null, data = null, onSuc
                 }
                 else if (status == "error") {
                     onFail(failParams, jqXHR, status);
+                    commonErrors(failParams, jqXHR, status);
                 }
             }
         }
@@ -160,7 +173,7 @@ function buildTable(params, data) {
         tableRows += "<th scope=\"row\">" + mcount + "</th>";
         tableRows += "<td>" + reqDate + "</td>";
         tableRows += "<td>" + resDate + "</td>";
-        tableRows += "<td>" + item.performedBy + "</td>";
+        tableRows += "<td>" + item.authorName + "</td>";
         tableRows += "<td>" + status + "</td>";
         tableRows += "</tr>";
         mcount++;
@@ -183,12 +196,20 @@ function buildModalConvo(params, data) {
     var reqDate = data.reqDate == null ? "-" : new Date(data.reqDate).toString('dd.MM.yyyy HH:mm');
     var resDate = data.resDate == null ? "-" : new Date(data.resDate).toString('dd.MM.yyyy HH:mm');
     var status = data.cstatus == null ? "-" : data.cstatus;
+    var request = JSON.parse(data.request);
 
     obj.find("#reqDate").val(reqDate);
-    obj.find("#req").val(data.request);
+
+    obj.find("#infoEntity").val(request.entity);
+    obj.find("#infoEntityItn").val(request.entityItn);
+    obj.find("#infoEntityRegNumber").val(request.entityRegNumber);
+    obj.find("#infoOrgItn").val(request.orgItn);
+    obj.find("#infoPhysItn").val(request.physItn);
+    obj.find("#infoNewReqDate").val(request.newReqDate);
+
     obj.find("#respDate").val(resDate);
     obj.find("#resp").val(data.response);
-    obj.find("#performedBy").text(data.performedBy);
+    obj.find("#performedBy").text(data.authorName);
     obj.find("#status").val(status);
 }
 
@@ -210,4 +231,19 @@ function deleteConversation(id) {
             ],
         // notify, {'type': 'success', 'msg': 'Conversation successfully deleted!', 'header': 'Success'},
         notify, {'type': 'error', 'msg': 'Conversation cannot be deleted!', 'header': 'Error'});
+}
+
+function openLocation(path) {
+    window.location = path;
+}
+
+function logout() {
+    // $.removeCookie("login");
+    // $.removeCookie("pass");
+
+    openLocation('/');
+}
+
+function applyCookie(params) {
+    $.cookie(params["name"], params["value"]);
 }

@@ -11,8 +11,10 @@ public class UsersEntity {
     private String uemail;
     private String upassword;
 
+    @Id
     @Column(name = "uid")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name="conSeqGen", sequenceName = "users_uid_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "conSeqGen")
     public int getUid() {
         return uid;
     }
@@ -21,7 +23,6 @@ public class UsersEntity {
         this.uid = uid;
     }
 
-    @Id
     @Basic
     @Column(name = "uname")
     public String getUname() {

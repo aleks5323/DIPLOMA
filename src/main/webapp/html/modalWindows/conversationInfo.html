@@ -24,7 +24,7 @@
 
                 <div class="modal-body">
                     <div class="container-fluid h-100 row">
-                        <div class="row justify-content-start align-items-center h-100 col-sm">
+                        <div class="justify-content-start align-items-center h-100 col-sm">
                             <form name="conversationInfo">
                                 <div class="form-header"><h4>Запрос</h4></div>
                                 <div class="form-group">
@@ -36,13 +36,30 @@
                                     <input type="text" id="reqDate" class="form-control" disabled value="">
                                 </div>
                                 <div class="form-group">
-                                    <label>Текст запроса</label>
-                                    <input type="text" id="req" class="form-control" disabled value="">
+                                    <div class="form-header"><h6>Параметры запроса</h6></div>
+                                    <div class="form-group">
+                                        <div class="form-header"><h6>Сведения о лице, выполняющем запрос</h6></div>
+                                        <label>Наименование юридического лица</label>
+                                        <input type="text" id="infoEntity" class="form-control" disabled value="">
+                                        <label>ИНН юридического лица</label>
+                                        <input type="text" id="infoEntityItn" class="form-control" disabled value="">
+                                        <label>Основной государственный регистрационный номер юридического лица</label>
+                                        <input type="text" id="infoEntityRegNumber" class="form-control" disabled value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-header"><h6>Сведения о налогоплательщике, в отношении которого осуществляется запрос</h6></div>
+                                        <label>ИНН организации</label>
+                                        <input type="text" id="infoOrgItn" class="form-control" disabled value="">
+                                        <label>ИНН физического лица</label>
+                                        <input type="text" id="infoPhysItn" class="form-control" disabled value="">
+                                        <label>Дата, на которую запрашивались сведения</label>
+                                        <input type="date" id="infoNewReqDate" class="form-control" disabled value="">
+                                    </div>
                                 </div>
                             </form>
                         </div>
 
-                        <div class="row justify-content-start align-items-center h-100 col-sm">
+                        <div class="justify-content-start align-items-center h-100 col-sm">
                             <form  name="conversationInfo">
                                 <div class="form-header"><h4>Ответ</h4></div>
                                 <div class="form-group">
@@ -51,11 +68,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Текст ответа</label>
-                                    <input type="text" id="resp" class="form-control" disabled value="">
+                                    <textarea type="textarea" id="resp" style="min-height: 256px;" class="form-control" disabled value="" />
                                 </div>
                                 <div class="form-group">
                                     <label>Статус запроса</label>
-                                    <input type="text" id="status" class="form-control" disabled value="">
+                                    <input id="status" class="form-control" disabled value="">
                                 </div>
                             </form>
                         </div>

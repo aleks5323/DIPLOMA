@@ -4,8 +4,11 @@ import com.diploma.DAO.UsersEntityImpl;
 import com.diploma.Entities.UsersEntity;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.xml.bind.DatatypeConverter;
@@ -21,8 +24,8 @@ public class Users {
     private UsersEntityImpl userDao;
 
     @POST
+    @RolesAllowed({"ADMIN"})
     @Path("/regUser")
-    @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     public void regUesr(UsersEntity user) throws NoSuchAlgorithmException {
 
@@ -46,6 +49,7 @@ public class Users {
     }
 
     @GET
+    @RolesAllowed({"ADMIN"})
     @Path("/delUser/{uid}")
     public void delUser(@PathParam("uid") Integer uid) {
         userDao.removeUser(uid);
@@ -64,15 +68,16 @@ public class Users {
     @Path("/authUser")
     @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response authUser(UsersEntity user) throws NoSuchAlgorithmException {
-        UsersEntity userCheck = userDao.getUserByLogin(user.getUname());
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(user.getUpassword().getBytes());
-        String pwdFromDb = DatatypeConverter.printHexBinary(md.digest());
+    public Response authUser(@Context HttpServletRequest req, UsersEntity user) throws NoSuchAlgorithmException {
+        HttpSession session = req.getSession(true);
 
         ///////!!!!!!!!
-        if (pwdFromDb.equals(userCheck.getUpassword()))
-            return Response.accepted().cookie(new NewCookie("login", user.getUname(), "/", "localhost", "", 1, false)).cookie(new NewCookie("pass", userCheck.getUpassword(), "/", "localhost", "", 1, false)).build();
+        if (userDao.validateUser(user)) {
+//            return Response.status(Response.Status.OK).cookie(new NewCookie("login", user.getUname(), "/", "localhost", "", 24*60*60, false)).cookie(new NewCookie("pass", userCheck.getUpassword(), "/", "localhost", "", 24*60*60, false)).build();
+            session.setAttribute("login", user.getUname());
+            session.setAttribute("pass", user.getUpassword());
+            return Response.status(Response.Status.OK).build();
+        }
         else
             return Response.status(Response.Status.UNAUTHORIZED).build();
     }

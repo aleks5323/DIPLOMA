@@ -5,27 +5,27 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table(name = "conversations", schema = "public", catalog = "diploma")
 public class ConversationsEntity {
-    private int cid;
+    private UUID cid = UUID.randomUUID();
     private String request;
     private Timestamp reqDate = new Timestamp(new Date().getTime());
     private String response = "";
     private Timestamp resDate;
     private int performedBy;
-    private String cstatus;
+    private String authorName;
+    private String cstatus = "request created";
 
     @Id
     @Column(name = "cid")
-    @SequenceGenerator(name="seq_gen", sequenceName = "conversations_cid_seq", allocationSize=1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen")
-    public int getCid() {
+    public UUID getCid() {
         return cid;
     }
 
-    public void setCid(int cid) {
+    public void setCid(UUID cid) {
         this.cid = cid;
     }
 
@@ -78,6 +78,12 @@ public class ConversationsEntity {
     public void setPerformedBy(int performedBy) {
         this.performedBy = performedBy;
     }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) { this.authorName = authorName; }
 
     @Override
     public boolean equals(Object o) {

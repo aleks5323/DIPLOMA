@@ -191,12 +191,24 @@ function buildModalConvo(params, data) {
     var objName = "#" + params[0];
     var obj = $(objName);
 
+    obj.find("#orgDiv").show();
+    obj.find("#physDiv").show();
+
     data = JSON.parse(data.responseText);
 
     var reqDate = data.reqDate == null ? "-" : new Date(data.reqDate).toString('dd.MM.yyyy HH:mm');
     var resDate = data.resDate == null ? "-" : new Date(data.resDate).toString('dd.MM.yyyy HH:mm');
     var status = data.cstatus == null ? "-" : data.cstatus;
+
+    if (data.response != "")
+        obj.find("#convInfoResp").show();
+
     var request = JSON.parse(data.request);
+
+    if (request.orgItn == null)
+        obj.find("#orgDiv").hide();
+    if (request.physItn == null)
+        obj.find("#physDiv").hide();
 
     obj.find("#reqDate").val(reqDate);
 
@@ -238,10 +250,10 @@ function openLocation(path) {
 }
 
 function logout() {
-    // $.removeCookie("login");
+    $.removeCookie("id");
     // $.removeCookie("pass");
 
-    openLocation('/');
+    // openLocation('/');
 }
 
 function applyCookie(params) {

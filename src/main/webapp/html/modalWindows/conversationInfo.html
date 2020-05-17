@@ -4,6 +4,8 @@
         var me = $('#conversationInfoModal');
         var id;
 
+        $("#convInfoResp").hide();
+
         me.on('shown.bs.modal', function () {
             id = me.find("#convoId").val();
             fillModalConvo(id);
@@ -24,11 +26,11 @@
 
                 <div class="modal-body">
                     <div class="container-fluid h-100 row">
-                        <div class="justify-content-start align-items-center h-100 col-sm">
+                        <div id="convInfoReq" class="justify-content-start align-items-center h-100 col-sm">
                             <form name="conversationInfo">
                                 <div class="form-header"><h4>Запрос</h4></div>
                                 <div class="form-group">
-                                    <label>Convo ID</label>
+                                    <label>Идентификатор запроса</label>
                                     <input type="text" id="convoId" class="form-control" disabled value="">
                                 </div>
                                 <div class="form-group">
@@ -36,7 +38,7 @@
                                     <input type="text" id="reqDate" class="form-control" disabled value="">
                                 </div>
                                 <div class="form-group">
-                                    <div class="form-header"><h6>Параметры запроса</h6></div>
+                                    <div class="form-header"><br><b><h6>Параметры запроса</h6></b><br></div>
                                     <div class="form-group">
                                         <div class="form-header"><h6>Сведения о лице, выполняющем запрос</h6></div>
                                         <label>Наименование юридического лица</label>
@@ -48,10 +50,14 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="form-header"><h6>Сведения о налогоплательщике, в отношении которого осуществляется запрос</h6></div>
-                                        <label>ИНН организации</label>
-                                        <input type="text" id="infoOrgItn" class="form-control" disabled value="">
-                                        <label>ИНН физического лица</label>
-                                        <input type="text" id="infoPhysItn" class="form-control" disabled value="">
+                                        <div id="orgDiv">
+                                            <label>ИНН организации</label>
+                                            <input type="text" id="infoOrgItn" class="form-control" disabled value="">
+                                        </div>
+                                        <div id="physDiv">
+                                            <label>ИНН физического лица</label>
+                                            <input type="text" id="infoPhysItn" class="form-control" disabled value="">
+                                        </div>
                                         <label>Дата, на которую запрашивались сведения</label>
                                         <input type="date" id="infoNewReqDate" class="form-control" disabled value="">
                                     </div>
@@ -59,8 +65,8 @@
                             </form>
                         </div>
 
-                        <div class="justify-content-start align-items-center h-100 col-sm">
-                            <form  name="conversationInfo">
+                        <div id="convInfoResp" class="justify-content-start align-items-center h-100 col-sm">
+                            <form name="conversationInfo">
                                 <div class="form-header"><h4>Ответ</h4></div>
                                 <div class="form-group">
                                     <label>Ответ пришел</label>
@@ -79,7 +85,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <label>Запрос выолнил </label>
+                        <label>Запрос выполнил </label>
                         <label id="performedBy"></label>
                     </div>
 

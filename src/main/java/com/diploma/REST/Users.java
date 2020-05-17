@@ -74,8 +74,10 @@ public class Users {
         ///////!!!!!!!!
         if (userDao.validateUser(user)) {
 //            return Response.status(Response.Status.OK).cookie(new NewCookie("login", user.getUname(), "/", "localhost", "", 24*60*60, false)).cookie(new NewCookie("pass", userCheck.getUpassword(), "/", "localhost", "", 24*60*60, false)).build();
+            UsersEntity genuineUser = userDao.getUserByLogin(user.getUname());
             session.setAttribute("login", user.getUname());
             session.setAttribute("pass", user.getUpassword());
+            session.setAttribute("id", genuineUser.getUid());
             return Response.status(Response.Status.OK).build();
         }
         else

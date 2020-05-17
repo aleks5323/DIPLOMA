@@ -7,6 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div id="userPanel">
-    <h7 id="userString">Hello, <% out.println(session.getAttribute("login")); %>!</h7>
+    <h7 id="userString">Приветствую <% out.println(session.getAttribute("login")); %>!</h7>
     <a href="scripts/logout.jsp" class="ion-log-out"></a>
 </div>

@@ -2,6 +2,8 @@ package com.diploma.REST;
 
 import com.diploma.DAO.ConversationsEntityImpl;
 import com.diploma.Entities.ConversationsEntity;
+import com.diploma.Utils.XMLUtil;
+import org.xml.sax.SAXException;
 
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
@@ -12,12 +14,17 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
 @Path("/conversations")
 public class Conversations {
+
+    XMLUtil xml = new XMLUtil();
 
     @Inject
     private ConversationsEntityImpl convoDao;
@@ -26,9 +33,11 @@ public class Conversations {
     @RolesAllowed({"ADMIN", "USER"})
     @Path("/newConversation")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response newConversation(ConversationsEntity convo) {
-        if (convoDao.newConversation(convo))
+    public Response newConversation(ConversationsEntity convo) throws ParserConfigurationException, TransformerException, SAXException, IOException {
+        if (convoDao.newConversation(convo)) {
+            xml.generateReqXml(convo);
             return Response.status(Response.Status.OK).build();
+        }
         else
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
     }

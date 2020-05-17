@@ -17,7 +17,7 @@ public class ConversationsEntity {
     private Timestamp resDate;
     private int performedBy;
     private String authorName;
-    private String cstatus = "request created";
+    private String cstatus = "запрос сформирован";
 
     @Id
     @Column(name = "cid")

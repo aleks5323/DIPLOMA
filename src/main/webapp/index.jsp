@@ -19,12 +19,6 @@
     <title>Адаптер СМЭВ</title>
 </head>
 <body>
-<%
-    if (session.getAttribute("login") != null && session.getAttribute("pass") != null)
-        System.out.println("ja");
-    else
-        System.out.println("nej");
-%>
 <div class="bs-example">
     <nav class="navbar navbar-expand-md navbar-light bg-light">
         <a href="/" class="navbar-brand">Brand</a>
@@ -69,20 +63,20 @@
     });
 
 </script>
-<%--<script type="text/javascript">--%>
-<%--    var usernameLine = $.cookie("login");--%>
-<%--    if (usernameLine == null) {--%>
-<%--        $("#userPanel").hide();--%>
-<%--        $("#navbar").hide();--%>
-<%--        $("#loginButton").show();--%>
-<%--    }--%>
-<%--    else {--%>
-<%--        $("#userString").text("Hello, " + usernameLine + "!");--%>
-<%--        $("#userPanel").show();--%>
-<%--        $("#navbar").show();--%>
-<%--        $("#loginButton").hide();--%>
-<%--    }--%>
-<%--</script>--%>
+
+    <%
+        if (session.getAttribute("login") == null) {
+    %>
+    <script>
+        logout();
+    </script>
+    <% } else {%>
+        <script>
+            if ($.cookie("id") == null)
+                $.cookie("id", <%out.print(session.getAttribute("id"));%>)
+            includePage('html/conversations.html');
+        </script>
+    <% }%>
 
 <audio class="notificationSound" style="display:none;">
     <source src="" />

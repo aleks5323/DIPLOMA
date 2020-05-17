@@ -7,5 +7,5 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div id="loginButton">
-    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#loginModal">Login</button>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#loginModal">Войти</button>
 </div>

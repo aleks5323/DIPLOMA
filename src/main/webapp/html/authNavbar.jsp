@@ -8,15 +8,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div id="navbar" class="navbar-nav">
     <li class="nav-item">
-        <a href="#" onclick="includePage();" class="nav-link">My Profile</a>
+        <a href="#" onclick="includePage();" class="nav-link">Мой профиль</a>
     </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="conversationsNavButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Conversations
+            Запросы
         </a>
         <div class="dropdown-menu" aria-labelledby="conversationsNavButton">
-            <a class="dropdown-item" onclick="showModalWindow('createRequestModal')" href="#">New Request</a>
-            <a class="dropdown-item" onclick="includePage('html/conversations.html')" href="#">Conversations</a>
+            <a class="dropdown-item" onclick="showModalWindow('createRequestModal')" href="#">Новый запрос</a>
+            <a class="dropdown-item" onclick="includePage('html/conversations.html')" href="#">Отобразить запросы</a>
             <!--                            <div class="dropdown-divider"></div>-->
             <!--                            <a class="dropdown-item" href="#">Something else here</a>-->
         </div>
